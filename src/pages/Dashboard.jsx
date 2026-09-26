@@ -1,9 +1,12 @@
 import { useEffect } from "react"
 import { supabase } from "../lib/supabase"
 import { useAuth } from "../context/AuthContext"
+import { useGarden } from "../context/GardenContext"
 
 export default function Dashboard() {
     const { user } = useAuth()
+    const { selectedGarden } = useGarden()
+
     useEffect(() => {
 
         async function testSupabase() {
@@ -40,6 +43,17 @@ export default function Dashboard() {
             <p className="mt-2 text-stone-500">
                 Ouvre la console du navigateur pour voir le résultat.
             </p>
+            {selectedGarden && (
+                <div className="mb-6 rounded-xl bg-green-50 p-4">
+                    <p className="text-sm text-green-700">
+                        Jardin sélectionné
+                    </p>
+
+                    <h2 className="text-xl font-semibold text-green-900">
+                        {selectedGarden.name}
+                    </h2>
+                </div>
+            )}
 
         </div>
     )

@@ -4,15 +4,18 @@ import {
   Route,
 } from "react-router-dom"
 
+import ProtectedRoute from "./components/ProtectedRoute"
+
 import MainLayout from "./layouts/MainLayout"
 
+import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
 import Plants from "./pages/Plants"
 import Journal from "./pages/Journal"
 import Photos from "./pages/Photos"
-import Login from "./pages/Login"
 import Gardens from "./pages/Gardens"
-import ProtectedRoute from "./components/ProtectedRoute"
+import About from "./pages/About"
+import Login from "./pages/Login"
 import Register from "./pages/Register"
 import UpdatePassword from "./pages/UpdatePassword"
 
@@ -25,6 +28,10 @@ function App() {
                     Page de connexion
                     Elle est indépendante du layout principal.
                 ------------------------------------------------ */}
+        <Route
+          path="/"
+          element={<Home />}
+        />
 
         <Route
           path="/login"
@@ -38,6 +45,10 @@ function App() {
           path="/update-password"
           element={<UpdatePassword />}
         />
+        <Route
+          path="/about"
+          element={<About />}
+        />
 
         {/* ------------------------------------------------
                     Application principale
@@ -47,10 +58,8 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
 
-            <Route
-              path="/"
-              element={<Dashboard />}
-            />
+
+            <Route path="/dashboard" element={<Dashboard />} />
 
             <Route
               path="/plants"
