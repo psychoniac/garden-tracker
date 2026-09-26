@@ -145,7 +145,7 @@ export default function Gardens() {
                 <button
                     type="button"
                     onClick={() => setShowForm(true)}
-                    className="rounded-lg bg-green-700 px-4 py-2 font-medium texxt-white hover:bg-green-800"
+                    className="rounded-lg bg-green-700 px-4 py-2 font-medium text-white hover:bg-green-800"
                 >
                     Nouveau Jardin
                 </button>
@@ -189,13 +189,10 @@ export default function Gardens() {
                             </p>
 
                         </div>
-
                     ))}
-
-)}
                 </div>
 
-
-</div>
+            )}
+        </div>
     )
 }

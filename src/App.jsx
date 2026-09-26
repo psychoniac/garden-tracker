@@ -13,6 +13,8 @@ import Photos from "./pages/Photos"
 import Login from "./pages/Login"
 import Gardens from "./pages/Gardens"
 import ProtectedRoute from "./components/ProtectedRoute"
+import Register from "./pages/Register"
+import UpdatePassword from "./pages/UpdatePassword"
 
 function App() {
   return (
@@ -28,7 +30,14 @@ function App() {
           path="/login"
           element={<Login />}
         />
-
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+        <Route
+          path="/update-password"
+          element={<UpdatePassword />}
+        />
 
         {/* ------------------------------------------------
                     Application principale
