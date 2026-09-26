@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { supabase } from "../lib/supabase"
+
 import GardenForm from "../components/GardenForm"
+import Modal from "../components/modals/Modal"
 
 export default function Gardens() {
     // --------------------------------------------------------
@@ -21,16 +23,18 @@ export default function Gardens() {
 
     const [error, setError] = useState("")
 
+    // --------------------------------------------------------
+    // Permet d'afficher / cacher la modal formulaire
+    // --------------------------------------------------------
 
-    const [showForm, setShowForm] = useState(false)
+    const [showGardenForm, setShowGardenForm] = useState(false)
+
     // --------------------------------------------------------
     // Récupération des jardins au chargement de la page
     // --------------------------------------------------------
 
     useEffect(() => {
-
         async function fetchGardens() {
-
             setLoading(true)
             setError("")
 
@@ -61,7 +65,6 @@ export default function Gardens() {
                 )
 
                 setLoading(false)
-
                 return
             }
 
@@ -71,26 +74,20 @@ export default function Gardens() {
             // deviennent notre état React.
             // ------------------------------------------------
 
-            setGardens(data)
-
+            setGardens(data || [])
             setLoading(false)
         }
 
-
         fetchGardens()
-
     }, [])
-
 
     // --------------------------------------------------------
     // Affichage pendant le chargement
     // --------------------------------------------------------
 
     if (loading) {
-
         return (
             <div className="p-8">
-
                 <h2 className="text-3xl font-bold">
                     Mes jardins
                 </h2>
@@ -98,21 +95,17 @@ export default function Gardens() {
                 <p className="mt-4 text-stone-500">
                     Chargement des jardins...
                 </p>
-
             </div>
         )
     }
-
 
     // --------------------------------------------------------
     // Affichage en cas d'erreur
     // --------------------------------------------------------
 
     if (error) {
-
         return (
             <div className="p-8">
-
                 <h2 className="text-3xl font-bold">
                     Mes jardins
                 </h2>
@@ -120,63 +113,59 @@ export default function Gardens() {
                 <p className="mt-4 text-red-600">
                     {error}
                 </p>
-
             </div>
         )
     }
 
-
     // --------------------------------------------------------
-    // Affichage des jardins
+    // Affichage principal
     // --------------------------------------------------------
 
     return (
-
-
-
         <div className="p-8">
+            {/* ---------------------
+            -----En-tête de la page--
+            ------------------------- */}
 
             <div className="mb-8">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-3xl font-bold">
+                        Mes jardins
+                    </h2>
 
-                <h2 className="text-3xl font-bold">
-                    Mes jardins
-                </h2>
+                    <button
+                        type="button"
+                        onClick={() => setShowGardenForm(true)
+                        }
+                        className="rounded-lg bg-green-700 px-4 py-2 font-medium text-white hover:bg-green-800"
+                    >
+                        Nouveau Jardin
+                    </button>
+                </div>
 
-                <button
-                    type="button"
-                    onClick={() => setShowForm(true)}
-                    className="rounded-lg bg-green-700 px-4 py-2 font-medium text-white hover:bg-green-800"
-                >
-                    Nouveau Jardin
-                </button>
                 <p className="mt-2 text-stone-500">
                     Tes jardins enregistrés dans Supabase
                 </p>
-
             </div>
 
+            {/*-------------------------------------------------------
+               Liste des jardins 
+               -------------------------------------------------------
+                */}
 
             {gardens.length === 0 ? (
-
                 <div className="rounded-xl border border-dashed border-stone-300 bg-white p-8">
-
                     <p className="text-stone-500">
                         Aucun jardin pour le moment.
                     </p>
-
                 </div>
-
             ) : (
-
                 <div className="grid gap-4 md:grid-cols-2">
-
                     {gardens.map((garden) => (
-
                         <div
                             key={garden.id}
                             className="rounded-xl border border-stone-200 bg-white p-6 shadow-sm"
                         >
-
                             <h3 className="text-xl font-semibold">
                                 🌱 {garden.name}
                             </h3>
@@ -187,12 +176,37 @@ export default function Gardens() {
                                     garden.created_at
                                 ).toLocaleDateString("fr-FR")}
                             </p>
-
                         </div>
                     ))}
                 </div>
+            )}
 
+            {/* ----------------------------------------------------------
+                Modal de création de jardin
+                ----------------------------------------------------------
+            */}
+            {showGardenForm && (
+                <Modal
+                    title="Nouveau jardin"
+                    onClose={() =>
+                        setShowGardenForm(false)
+                    }>
+                    <GardenForm
+                        onSaved={(newGarden) => {
+                            // on ajoute immédiatement le nouveau jardin a notre liste locale.
+                            setGardens((currentGardens) => [
+                                ...currentGardens,
+                                newGarden,
+                            ])
+
+                            // on ferme la modal
+                            setShowGardenForm(false)
+                        }}
+                        onCancel={() => setShowGardenForm(false)}
+                    />
+                </Modal>
             )}
         </div>
+
     )
 }
