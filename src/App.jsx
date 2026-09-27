@@ -12,7 +12,6 @@ import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
 import Plants from "./pages/Plants"
 import Journal from "./pages/Journal"
-import Photos from "./pages/Photos"
 import Gardens from "./pages/Gardens"
 import About from "./pages/About"
 import Login from "./pages/Login"
@@ -69,11 +68,6 @@ function App() {
             <Route
               path="/journal"
               element={<Journal />}
-            />
-
-            <Route
-              path="/photos"
-              element={<Photos />}
             />
 
             <Route
